@@ -1,0 +1,67 @@
+IA\RegisterBundle\Entity\User:
+    type: entity
+    table: public.user
+    RepositoryClass: IA\RegisterBundle\Entity\UserRepository
+
+    oneToMany:
+        user_work:
+            targetEntity: WorkTime
+            mappedBy: work_user
+
+        user_puser:
+            targetEntity: PosUser
+            mappedBy: puser_user
+
+        user_booking:
+            targetEntity: Booking
+            mappedBy: booking_user
+
+    manyToOne:
+        user_contact:
+            targetEntity: ContactInfo
+            inversedBy: contact_user
+            joinColumn:
+                name: contact_info_id
+                referencedColumnName: id
+
+#    manyToMany:
+#        user_roles:
+#            targetEntity: Roles
+#            inversedBy: roles_user
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+            unique: true
+
+    fields:
+        username:
+            type: string
+            length: 50
+
+#        salt:
+#            type: string
+#            length: 40
+
+        password:
+            type: string
+            length: 50
+
+        contact_info_id:
+            type: integer
+
+        data_json:
+            type: json_array
+            nullable: true
+
+        updated_at:
+            type: datetime
+            nullable: true
+
+        created_at:
+            type: datetime
+
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]
