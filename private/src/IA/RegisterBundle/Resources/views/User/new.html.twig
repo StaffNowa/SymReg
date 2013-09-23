@@ -1,0 +1,21 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <div class="span2">
+        <h1>Sign Up</h1>
+        <form action="{{ path('user_create') }}" method="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+            <p>
+                <button type="submit" class="btn btn-primary pull-right">Sign Up</button>
+            </p>
+        </form>
+
+        <ul class="record_actions">
+            <li>
+                <a href="{{ path('user') }}">
+                    Back to the list
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

@@ -1,5 +1,5 @@
 # Bootstrap
-app/bootstrap*
+private/app/bootstrap*
 
 # Symfony directories
 vendor/*
@@ -9,5 +9,10 @@ web/uploads/*
 web/bundles/*
 
 # Configuration files
-app/config/parameters.ini
-app/config/parameters.yml
+private/app/config/parameters.ini
+private/app/config/parameters.yml
+
+/private/app/cache/*
+/private/app/logs/*
+
+/.idea

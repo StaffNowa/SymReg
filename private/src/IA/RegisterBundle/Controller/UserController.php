@@ -3,6 +3,8 @@
 namespace IA\RegisterBundle\Controller;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Query;
 use IA\RegisterBundle\Entity\ContactInfo;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,10 +44,10 @@ class UserController extends Controller
      */
     public function listAction()
     {
-//        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN'))
-//        {
-//            throw new AccessDeniedException();
-//        }
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN'))
+        {
+            throw new AccessDeniedException();
+        }
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('IARegisterBundle:User');
 
@@ -83,6 +85,13 @@ class UserController extends Controller
         $form = $this->createForm(new UserType(), $entity);
         $form->bind($request);
         $entity->setUserContact($cInfo);
+
+        //encode password
+        $userType = $request->request->get('ia_registerbundle_usertype');
+        $factory = $this->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($entity);
+        $password = $encoder->encodePassword($userType['password']['confirm'], $entity->getSalt());
+        $entity->setPassword($password);
 
         if ($form->isValid()) {
             //add updated_at & created_at
@@ -252,37 +261,22 @@ class UserController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        $username = $request->get('_username');
-        $password = $request->get('_password');
-
-//        if ($request->getMethod() == 'POST')
-//        {
-            $em = $this->getDoctrine()->getManager();
-            $users = $em->getRepository('IARegisterBundle:User');
-            debugvar($users->findByUsername('staff'));
-//        }
-
-        exit('test');
-
         // get the login error if there is one
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR))
-        {
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(
                 SecurityContext::AUTHENTICATION_ERROR
             );
-        }
-        else
-        {
-            $error = $session->get(SecurityContext::ACCESS_DENIED_ERROR);
+        } else {
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
         return $this->render(
-            'IARegisterBundle:User:login.html.twig'
-            , array(
-                // username entered by the user
-                'username' => $session->get(SecurityContext::LAST_USERNAME)
-                , 'error' => $error
+            'IARegisterBundle:User:login.html.twig',
+            array(
+                // last username entered by the user
+                'last_username' => $session->get(SecurityContext::LAST_USERNAME),
+                'error'         => $error,
             )
         );
     }

@@ -24,10 +24,10 @@ IA\RegisterBundle\Entity\User:
                 name: contact_info_id
                 referencedColumnName: id
 
-#    manyToMany:
-#        user_roles:
-#            targetEntity: Roles
-#            inversedBy: roles_user
+    manyToMany:
+        roles:
+            targetEntity: Role
+            inversedBy: users
 
     id:
         id:
@@ -40,13 +40,14 @@ IA\RegisterBundle\Entity\User:
             type: string
             length: 50
 
-#        salt:
-#            type: string
-#            length: 40
+        salt:
+            type: string
+            length: 40
+            nullable: true
 
         password:
             type: string
-            length: 50
+            length: 100
 
         contact_info_id:
             type: integer

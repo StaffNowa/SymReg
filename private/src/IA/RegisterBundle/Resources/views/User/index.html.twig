@@ -1,0 +1,38 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>User list</h1>
+    <div class="btn-toolbar">
+        <a href="{{ path('user_new') }}" class="btn btn-primary">New User</a>
+    </div>
+    <div class="well">
+        <table class="records_list table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Created at</th>
+                <th>Updated at</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{{ entity.username }}</td>
+                    <td>{% if entity.createdat %}{{ entity.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if entity.updatedat %}{{ entity.updatedat|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>
+                        <a href="{{ path('user_show', { 'id': entity.id }) }}"><i class="icon-user"></i></a>
+                        <a href="{{ path('user_edit', { 'id': entity.id }) }}"><i class="icon-pencil"></i></a>
+                        {#<a href="{{ path('user_delete', { 'id': entity.id }) }}"><i class="icon-remove"></i></a>#}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    {% endblock %}

@@ -3,11 +3,12 @@
 namespace IA\RegisterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var integer
@@ -18,11 +19,6 @@ class User
      * @var string
      */
     private $username;
-
-    /**
-     * @var string
-     */
-    private $salt;
 
     /**
      * @var string
@@ -70,6 +66,11 @@ class User
     private $user_contact;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $roles;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -77,6 +78,7 @@ class User
         $this->user_work = new \Doctrine\Common\Collections\ArrayCollection();
         $this->user_puser = new \Doctrine\Common\Collections\ArrayCollection();
         $this->user_booking = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -110,29 +112,6 @@ class User
     public function getUsername()
     {
         return $this->username;
-    }
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-    
-        return $this;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return string 
-     */
-    public function getSalt()
-    {
-        return $this->salt;
     }
 
     /**
@@ -371,6 +350,48 @@ class User
     {
         return $this->user_contact;
     }
+
+    /**
+     * Add roles
+     *
+     * @param \IA\RegisterBundle\Entity\Role $roles
+     * @return User
+     */
+    public function addRole(\IA\RegisterBundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+    
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \IA\RegisterBundle\Entity\Role $roles
+     */
+    public function removeRole(\IA\RegisterBundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
+    }
+
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRoles()
+    {
+        return $this->roles->toArray();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+
+    }
+
     /**
      * @ORM\PrePersist
      */
@@ -388,5 +409,53 @@ class User
     public function setUpdatedAtValue()
     {
         $this->updated_at = new \DateTime();
+    }
+    /**
+     * @var string
+     */
+    private $salt;
+
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    
+        return $this;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string 
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+        ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            ) = unserialize($serialized);
     }
 }
