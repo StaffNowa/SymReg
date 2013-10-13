@@ -1,0 +1,73 @@
+IA\RegisterBundle\Entity\ContactInfo:
+    type: entity
+    table: public.contact_info
+
+    oneToMany:
+        contact_pos:
+            targetEntity: Pos
+            mappedBy: pos_contact
+
+        contact_booking:
+            targetEntity: Booking
+            mappedBy: booking_contact
+
+        contact_org:
+            targetEntity: Organization
+            mappedBy: org_contact
+
+        contact_user:
+            targetEntity: User
+            mappedBy: user_contact
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+
+    fields:
+        address:
+            type: string
+            length: 100
+
+        tel:
+            type: string
+            length: 15
+            nullable: true
+
+        fax:
+            type: string
+            length: 15
+            nullable: true
+
+        email:
+            type: string
+            length: 100
+            nullable: true
+
+        www_address:
+            type: string
+            length: 100
+            nullable: true
+
+        first_name:
+            type: string
+            length: 100
+
+        last_name:
+            type: string
+            length: 100
+
+        personal_code:
+            type: string
+            length: 100
+
+        updated_at:
+            type: datetime
+            nullable: true
+
+        created_at:
+            type: datetime
+
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]

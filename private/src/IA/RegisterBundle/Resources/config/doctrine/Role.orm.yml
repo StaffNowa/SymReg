@@ -1,0 +1,36 @@
+IA\RegisterBundle\Entity\Role:
+    type: entity
+    table: public.role
+    repositoryClass: IA\RegisterBundle\Entity\Repository\RoleRepository
+
+    manyToMany:
+        users:
+            targetEntity: User
+            inversedBy: roles
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+            unique: true
+
+    fields:
+        name:
+            type: string
+            length: 50
+
+        role:
+            type: string
+            length: 20
+            unique: true
+
+        updated_at:
+            type: datetime
+            nullable: true
+
+        created_at:
+            type: datetime
+
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]

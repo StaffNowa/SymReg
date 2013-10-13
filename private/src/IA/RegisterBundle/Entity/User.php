@@ -80,11 +80,11 @@ class User implements UserInterface, \Serializable
         $this->user_booking = new \Doctrine\Common\Collections\ArrayCollection();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -100,14 +100,14 @@ class User implements UserInterface, \Serializable
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -123,14 +123,14 @@ class User implements UserInterface, \Serializable
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -146,14 +146,14 @@ class User implements UserInterface, \Serializable
     public function setContactInfoId($contactInfoId)
     {
         $this->contact_info_id = $contactInfoId;
-    
+
         return $this;
     }
 
     /**
      * Get contact_info_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getContactInfoId()
     {
@@ -169,14 +169,14 @@ class User implements UserInterface, \Serializable
     public function setDataJson($dataJson)
     {
         $this->data_json = $dataJson;
-    
+
         return $this;
     }
 
     /**
      * Get data_json
      *
-     * @return array 
+     * @return array
      */
     public function getDataJson()
     {
@@ -192,14 +192,14 @@ class User implements UserInterface, \Serializable
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
+
         return $this;
     }
 
     /**
      * Get updated_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -215,14 +215,14 @@ class User implements UserInterface, \Serializable
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -238,7 +238,7 @@ class User implements UserInterface, \Serializable
     public function addUserWork(\IA\RegisterBundle\Entity\WorkTime $userWork)
     {
         $this->user_work[] = $userWork;
-    
+
         return $this;
     }
 
@@ -255,7 +255,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get user_work
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUserWork()
     {
@@ -271,7 +271,7 @@ class User implements UserInterface, \Serializable
     public function addUserPuser(\IA\RegisterBundle\Entity\PosUser $userPuser)
     {
         $this->user_puser[] = $userPuser;
-    
+
         return $this;
     }
 
@@ -288,7 +288,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get user_puser
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUserPuser()
     {
@@ -304,7 +304,7 @@ class User implements UserInterface, \Serializable
     public function addUserBooking(\IA\RegisterBundle\Entity\Booking $userBooking)
     {
         $this->user_booking[] = $userBooking;
-    
+
         return $this;
     }
 
@@ -321,7 +321,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get user_booking
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUserBooking()
     {
@@ -337,14 +337,14 @@ class User implements UserInterface, \Serializable
     public function setUserContact(\IA\RegisterBundle\Entity\ContactInfo $userContact = null)
     {
         $this->user_contact = $userContact;
-    
+
         return $this;
     }
 
     /**
      * Get user_contact
      *
-     * @return \IA\RegisterBundle\Entity\ContactInfo 
+     * @return \IA\RegisterBundle\Entity\ContactInfo
      */
     public function getUserContact()
     {
@@ -360,7 +360,7 @@ class User implements UserInterface, \Serializable
     public function addRole(\IA\RegisterBundle\Entity\Role $roles)
     {
         $this->roles[] = $roles;
-    
+
         return $this;
     }
 
@@ -377,7 +377,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get roles
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRoles()
     {
@@ -425,14 +425,14 @@ class User implements UserInterface, \Serializable
     public function setSalt($salt)
     {
         $this->salt = $salt;
-    
+
         return $this;
     }
 
     /**
      * Get salt
      *
-     * @return string 
+     * @return string
      */
     public function getSalt()
     {
@@ -441,11 +441,16 @@ class User implements UserInterface, \Serializable
 
     /**
      * @see \Serializable::serialize()
+     * ! Don't serialize $roles field
      */
     public function serialize()
     {
         return serialize(array(
-            $this->id,
+            $this->id
+//            , $this->username
+//            , $this->email
+//            , $this->salt
+//            , $this->password
         ));
     }
 
@@ -455,7 +460,16 @@ class User implements UserInterface, \Serializable
     public function unserialize($serialized)
     {
         list (
-            $this->id,
+            $this->id
+//            , $this->username
+//            , $this->email
+//            , $this->salt
+//            , $this->password
             ) = unserialize($serialized);
+    }
+
+    public function __toString()
+    {
+        return (string)$this->getUsername();
     }
 }

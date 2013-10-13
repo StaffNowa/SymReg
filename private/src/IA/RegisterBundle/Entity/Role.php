@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
 /**
  * Role
  */
-class Role implements RoleInterface
+class Role implements RoleInterface, \Serializable
 {
     /**
      * @var integer
@@ -199,5 +199,35 @@ class Role implements RoleInterface
     public function setUpdatedAtValue()
     {
         $this->updated_at = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return (string)$this->name;
+    }
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        /*
+         * ! Don't serialize $users field !
+         */
+        return \serialize(array(
+            $this->id,
+            $this->role
+        ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->role
+            ) = \unserialize($serialized);
     }
 }

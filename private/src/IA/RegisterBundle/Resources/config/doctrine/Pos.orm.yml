@@ -1,0 +1,68 @@
+IA\RegisterBundle\Entity\Pos:
+    type: entity
+    table: public.pos
+
+    manyToOne:
+        #organization_id
+        pos_org:
+            targetEntity: Organization
+            inversedBy: org_pos
+            joinColumn:
+                name: organization_id
+                referencedColumnName: id
+
+        #contact_info_id
+        pos_contact:
+            targetEntity: ContactInfo
+            inversedBy: contact_pos
+            joinColumn:
+                name: contact_info_id
+                referencedColumnName: id
+
+    oneToMany:
+        pos_work:
+            targetEntity: WorkTime
+            mappedBy: work_pos
+
+        pos_puser:
+            targetEntity: PosUser
+            mappedBy: puser_pos
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+
+    fields:
+        organization_id:
+            type: integer
+
+        contact_info_id:
+            type: integer
+
+        country_id:
+            type: integer
+            nullable: true
+
+        city_id:
+            type: integer
+            nullable: true
+
+        region:
+            type: string
+            length: 100
+
+        data_json:
+            type: json_array
+            nullable: true
+
+        updated_at:
+            type: datetime
+            nullable: true
+
+        created_at:
+            type: datetime
+
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]

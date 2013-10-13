@@ -1,0 +1,53 @@
+IA\RegisterBundle\Entity\Organization:
+    type: entity
+    table: public.organization
+
+    oneToMany:
+        org_pos:
+            targetEntity: Pos
+            mappedBy: pos_org
+
+    manyToOne:
+        #contact_info_id
+        org_contact:
+            targetEntity: Contactinfo
+            inversedBy: contact_org
+            joinColumn:
+                name: contact_info_id
+                referencedColumnName: id
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+
+    fields:
+        org_name:
+            type: string
+            length: 150
+
+        country_id:
+            type: integer
+            nullable: true
+
+        city_id:
+            type: integer
+            nullable: true
+
+        contact_info_id:
+            type: integer
+
+        data_json:
+            type: json_array
+            nullable: true
+
+        updated_at:
+            type: datetime
+            nullable: true
+
+        created_at:
+            type: datetime
+
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]

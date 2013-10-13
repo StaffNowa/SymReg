@@ -16,3 +16,9 @@ private/app/config/parameters.yml
 /private/app/logs/*
 
 /.idea
+/private/LICENSE
+
+/private/README.md
+/private/UPGRADE-2.2.md
+/private/UPGRADE-2.3.md
+/private/UPGRADE.md

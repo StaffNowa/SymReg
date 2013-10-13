@@ -36,12 +36,7 @@ class UserType extends AbstractType
 //                    'class' => 'btn btn-primary pull-right'
 //                )
 //            ))
-//            ->add('updated_at', 'text', array(
-//                'data' => date('Y-m-d H:i:s', time())
-//                , 'format' => 'yyyy-MM-dd'
 //            ))
-//            ->add('created_at', 'text', array('data' => date('Y-m-d H:i:s', time())))
-//            ->add('email', new ContactInfoType())
         ;
     }
 

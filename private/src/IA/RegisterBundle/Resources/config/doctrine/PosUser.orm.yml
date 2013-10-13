@@ -1,0 +1,32 @@
+IA\RegisterBundle\Entity\PosUser:
+    type: entity
+    table: public.pos_user
+
+    manyToOne:
+        #pos_id
+        puser_pos:
+            targetEntity: Pos
+            inversedBy: pos_puser
+            joinColumn:
+                name: pos_id
+                referencedColumnName: id
+
+        #user_id
+        puser_user:
+            targetEntity: User
+            inversedBy: user_puser
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+
+    fields:
+        pos_id:
+            type: integer
+
+        user_id:
+            type: integer

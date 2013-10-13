@@ -1,0 +1,50 @@
+IA\RegisterBundle\Entity\Booking:
+    type: entity
+    table: public.booking
+
+    manyToOne:
+        #user_id
+        booking_user:
+            targetEntity: User
+            inversedBy: user_booking
+            joinColumn:
+                name: order_salesman
+                referencedColumnName: id
+
+        #contact_info_id
+        booking_contact:
+            targetEntity: ContactInfo
+            inversedBy: contact_booking
+            joinColumn:
+                name: contact_info_id
+                referencedColumnName: id
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+
+    fields:
+        order_number:
+            type: string
+            length: 10
+
+        order_salesman:
+            type: integer
+
+        contact_info_id:
+            type: integer
+
+        additional_info:
+            type: text
+            nullable: true
+
+        data_json:
+            type: json_array
+            nullable: true
+
+        updated_at:
+            type: datetime
+
+        created_at:
+            type: datetime

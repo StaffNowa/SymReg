@@ -6,6 +6,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Query;
 use IA\RegisterBundle\Entity\ContactInfo;
+use IA\RegisterBundle\Form\UserRoleType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -24,8 +25,6 @@ use Symfony\Component\Security\Core\SecurityContext;
 class UserController extends Controller
 {
     /*
-     *
-     *
      * @Route("/", name="user")
      * @Method("GET")
      * @Template()
@@ -74,7 +73,6 @@ class UserController extends Controller
         /* TODO: @staff - add exists user validation */
         /* TODO @staff - add password compare */
 
-
         $cInfo = new ContactInfo();
         $cInfo->setAddress("");
         $cInfo->setFirstName("");
@@ -84,6 +82,11 @@ class UserController extends Controller
         $entity  = new User();
         $form = $this->createForm(new UserType(), $entity);
         $form->bind($request);
+        if ($form->get('email')->getData() != '')
+        {
+            $cInfo->setEmail($form->get('email')->getData());
+        }
+
         $entity->setUserContact($cInfo);
 
         //encode password
@@ -94,7 +97,6 @@ class UserController extends Controller
         $entity->setPassword($password);
 
         if ($form->isValid()) {
-            //add updated_at & created_at
             $em = $this->getDoctrine()->getManager();
             $em->persist($cInfo);
             $em->persist($entity);
@@ -137,9 +139,7 @@ class UserController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('IARegisterBundle:User')->find($id);
-
+        $entity = $em->getRepository('IARegisterBundle:User')->getUserById($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
@@ -278,6 +278,51 @@ class UserController extends Controller
                 'last_username' => $session->get(SecurityContext::LAST_USERNAME),
                 'error'         => $error,
             )
+        );
+    }
+
+//    /**
+//     * Displays a form to edit an existing User entity.
+//     *
+//     * @Route("/id/{id}/edit", name="user_edit")
+//     * @Method("GET")
+//     * @Template()
+//     */
+
+    /**
+     * Change User Role by userId
+     *
+     * @Route("/id/{id}/role", requirements={"id" = "\d+"}, name="user_role")
+     * @Method({"GET", "POST"})
+     * @Template()
+     */
+    public function roleAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('IARegisterBundle:User')->getUserRoleById($id);
+//        debugvar($entity);
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $form = $this->createForm(new UserRoleType(), $entity);
+        if ($request->getMethod() == "POST")
+        {
+            //TODO: @staff fix problem with $form->get('role')->getData();
+            $data = $request->request->all();
+            $userRoles = $data['ia_registerbundle_user_role_type']['role'];
+//            debugvar($userRoles);
+
+            /* @var $entity User */
+            debugvar($entity);
+//            debugvar($entity->addRole());
+            exit('test');
+        }
+
+        return array(
+            'entity'        => $entity
+            , 'user_id'     => $id
+            , 'role_form'   => $form->createView()
         );
     }
 }

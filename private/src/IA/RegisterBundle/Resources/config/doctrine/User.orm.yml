@@ -1,7 +1,7 @@
 IA\RegisterBundle\Entity\User:
     type: entity
     table: public.user
-    RepositoryClass: IA\RegisterBundle\Entity\UserRepository
+    repositoryClass: IA\RegisterBundle\Entity\Repository\UserRepository
 
     oneToMany:
         user_work:

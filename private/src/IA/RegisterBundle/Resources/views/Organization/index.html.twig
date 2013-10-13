@@ -1,0 +1,40 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Organization list</h1>
+    <div class="btn-toolbar">
+        <a href="{{ path('organization_new') }}" class="btn btn-primary">Create a new entry</a>
+    </div>
+
+    <div class="well">
+        <table class="records_list table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Organization Name</th>
+                    <th>Contact Name</th>
+                    <th>Updated At</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('organization_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{{ entity.orgname }}</td>
+                    <td>{{ entity.orgcontact }}</td>
+                    <td>{% if entity.updatedat %}{{ entity.updatedat|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if entity.createdat %}{{ entity.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>
+                    <td>
+                        <a href="{{ path('organization_show', { 'id': entity.id }) }}"><i class="icon-user"></i></a>
+                        <a href="{{ path('organization_edit', { 'id': entity.id }) }}"><i class="icon-pencil"></i></a>
+                        {#<a href="{{ path('contact_info_delete', { 'id': entity.id }) }}"><i class="icon-remove"></i></a>#}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}

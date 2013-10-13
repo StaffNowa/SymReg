@@ -1,0 +1,51 @@
+IA\RegisterBundle\Entity\WorkTime:
+    type: entity
+    table: public.work_time
+
+    manyToOne:
+        #pos_id
+        work_pos:
+            targetEntity: Pos
+            inversedBy: pos_work
+            joinColumn:
+                name: pos_id
+                referencedColumnName: id
+
+        #user_id
+        work_user:
+            targetEntity: User
+            inversedBy: user_work
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+
+    fields:
+        pos_id:
+            type: integer
+
+        user_id:
+            type: integer
+
+        work_time_start:
+            type: datetime
+
+        work_time_end:
+            type: datetime
+
+        breakfast:
+            type: string
+            length: 100
+
+        data_json:
+            type: json_array
+
+        updated_at:
+            type: datetime
+
+        created_at:
+            type: datetime
