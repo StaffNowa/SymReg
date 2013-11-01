@@ -1,25 +1,31 @@
 {% extends '::base.html.twig' %}
 
+{% form_theme form _self %}
+
+{% if form is defined %}
+    {% form_theme form 'IARegisterBundle:Form:fields.html.twig' %}
+{% endif %}
+
 {% block body -%}
-    <h1>Pos creation</h1>
+    <div class="span5">
+        <h1>Pos creation</h1>
 
-    <form action="{{ path('pos_create') }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-        <p>
-            <button type="submit">Create</button>
-        </p>
-    </form>
+        <form action="{{ path('pos_create') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+            {{ form_widget(form) }}
+            <p>
+                <button type="submit" class="btn btn-primary pull-left">Create</button>
+            </p>
+        </form>
 
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('user_new') }}">
-                Create new user
-            </a>
-        </li>
-        <li>
+        <a href="{{ path('user_new') }}" class="btn btn-primary pull-right">
+            Create new user
+        </a>
+
+        <div class="record_actions">
             <a href="{{ path('pos') }}">
                 Back to the list
             </a>
-        </li>
-    </ul>
+        </div>
+    </div>
+
 {% endblock %}

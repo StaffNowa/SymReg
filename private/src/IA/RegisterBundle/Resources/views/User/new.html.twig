@@ -1,21 +1,27 @@
 {% extends '::base.html.twig' %}
 
+{% form_theme form _self %}
+
+{% if form is defined %}
+    {% form_theme form 'IARegisterBundle:Form:fields.html.twig' %}
+{% endif %}
+
 {% block body -%}
-    <div class="span2">
+    <div class="span5">
         <h1>Sign Up</h1>
-        <form action="{{ path('user_create') }}" method="post" {{ form_enctype(form) }}>
+        <form action="{{ path('user_create') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
             {{ form_widget(form) }}
             <p>
                 <button type="submit" class="btn btn-primary pull-right">Sign Up</button>
             </p>
         </form>
 
-        <ul class="record_actions">
-            <li>
-                <a href="{{ path('user') }}">
-                    Back to the list
-                </a>
-            </li>
-        </ul>
+        {#<ul class="record_actions">#}
+            {#<li>#}
+                {#<a href="{{ path('user') }}">#}
+                    {#Back to the list#}
+                {#</a>#}
+            {#</li>#}
+        {#</ul>#}
     </div>
 {% endblock %}

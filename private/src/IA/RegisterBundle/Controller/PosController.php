@@ -54,7 +54,6 @@ class PosController extends Controller
             $em->flush();
 
             return $this->redirect($this->generateUrl('pos'));
-//            return $this->redirect($this->generateUrl('pos_show', array('id' => $entity->getId())));
         }
 
         return array(

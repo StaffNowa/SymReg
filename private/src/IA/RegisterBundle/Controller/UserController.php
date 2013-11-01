@@ -2,10 +2,12 @@
 
 namespace IA\RegisterBundle\Controller;
 
+use Doctrine\Common\Util\Debug;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Query;
 use IA\RegisterBundle\Entity\ContactInfo;
+use IA\RegisterBundle\Entity\UserRole;
 use IA\RegisterBundle\Form\UserRoleType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use IA\RegisterBundle\Entity\User;
+use IA\RegisterBundle\Entity\Role;
 use IA\RegisterBundle\Form\UserType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -300,28 +303,33 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('IARegisterBundle:User')->getUserRoleById($id);
-//        debugvar($entity);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
         $form = $this->createForm(new UserRoleType(), $entity);
+        $roles = $em->getRepository('IARegisterBundle:Role')->getRoleList();
+
         if ($request->getMethod() == "POST")
         {
             //TODO: @staff fix problem with $form->get('role')->getData();
-            $data = $request->request->all();
-            $userRoles = $data['ia_registerbundle_user_role_type']['role'];
-//            debugvar($userRoles);
+//            $data = $request->request->all();
+//            $userRoles = $data['ia_registerbundle_user_role_type'];
 
-            /* @var $entity User */
-            debugvar($entity);
-//            debugvar($entity->addRole());
-            exit('test');
+            // get roles from $_POST
+            $rolesData = $request->request->get('role');
+            if ($rolesData)
+            {
+                $role = $em->getRepository('IARegisterBundle:Role')->findById($rolesData);
+                $entity->setRoles($role);
+            }
+            $em->flush();
         }
 
         return array(
             'entity'        => $entity
             , 'user_id'     => $id
+            , 'roles'       => $roles
             , 'role_form'   => $form->createView()
         );
     }

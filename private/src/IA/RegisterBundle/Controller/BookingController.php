@@ -2,6 +2,7 @@
 
 namespace IA\RegisterBundle\Controller;
 
+use IA\RegisterBundle\Entity\ContactInfo;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -49,11 +50,34 @@ class BookingController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
+            $reqData = $request->request;
+            // if form name is not empty than add contact information in database
+            if ($form->getName() != '')
+            {
+                $reqData = $reqData->get($form->getName());
+                //Add Contact Information
+                $contact = new ContactInfo();
+                $contact->setAddress($reqData['address']);
+                $contact->setTel($reqData['tel']);
+                $contact->setFax($reqData['fax']);
+                $contact->setEmail($reqData['email']);
+                $contact->setWwwAddress($reqData['www_address']);
+                $contact->setFirstName($reqData['first_name']);
+                $contact->setLastName($reqData['last_name']);
+                $contact->setPersonalCode($reqData['personal_code']);
+                // add Contact Information object to Booking query
+                $entity->setBookingContact($contact);
+            }
+
             $em = $this->getDoctrine()->getManager();
+            if ($form->getName() != '')
+            {
+                $em->persist($contact);
+            }
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('booking_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('booking'));
         }
 
         return array(

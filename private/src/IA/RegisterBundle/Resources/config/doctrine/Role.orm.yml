@@ -6,7 +6,7 @@ IA\RegisterBundle\Entity\Role:
     manyToMany:
         users:
             targetEntity: User
-            inversedBy: roles
+            mappedBy: roles
 
     id:
         id:

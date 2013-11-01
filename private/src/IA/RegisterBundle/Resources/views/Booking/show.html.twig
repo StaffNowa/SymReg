@@ -1,62 +1,87 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Booking</h1>
+    <div class="span5">
+        <h1>{{ "Booking"|trans }}</h1>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Order_number</th>
-                <td>{{ entity.ordernumber }}</td>
-            </tr>
-            <tr>
-                <th>Order_salesman</th>
-                <td>{{ entity.ordersalesman }}</td>
-            </tr>
-            <tr>
-                <th>Contact_info_id</th>
-                <td>{{ entity.contactinfoid }}</td>
-            </tr>
-            <tr>
-                <th>Additional_info</th>
-                <td>{{ entity.additionalinfo }}</td>
-            </tr>
-            <tr>
-                <th>Data_json</th>
-                <td>{{ entity.datajson }}</td>
-            </tr>
-            <tr>
-                <th>Updated_at</th>
-                <td>{{ entity.updatedat|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ entity.createdat|date('Y-m-d H:i:s') }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="row">
+            <div class="span1">
+            </div>
+            <div class="span4">
+                <blockquote>
+                    <table>
+                        <tr>
+                            <td>ID</td>
+                            <td>{{ entity.id }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ "Order Number"|trans }}</td>
+                            <td>{{ entity.ordernumber }}</td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <b>{{ "Contact Information:"|trans }}</b>
+                    <table>
+                        <tr>
+                            <td>{{ "First Name"|trans }}</td>
+                            <td>{{ entity.bookingcontact.firstname }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ "Last Name"|trans }}</td>
+                            <td>{{ entity.bookingcontact.lastname }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ "Address"|trans }}</td>
+                            <td>{{ entity.bookingcontact.address }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ "Tel"|trans }}</td>
+                            <td>{{ entity.bookingcontact.tel }}</td>
+                        </tr>
+                        {% if(entity.bookingcontact.fax) %}
+                            <tr>
+                                <td>{{ "Fax"|trans }}</td>
+                                <td>{{ entity.bookingcontact.fax }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>{{ "Email"|trans }}</td>
+                            <td>{{ entity.bookingcontact.email }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ "www"|trans }}</td>
+                            <td>{{ entity.bookingcontact.wwwaddress }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ "Personal Code"|trans }}</td>
+                            <td>{{ entity.bookingcontact.personalcode }}</td>
+                        </tr>
+                    </table>
+                </blockquote>
+                <p>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('booking') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('booking_edit', { 'id': entity.id }) }}">
+                </p>
+            </div>
+
+        </div>
+
+        <a href="{{ path('booking_edit', { 'id': entity.id }) }}" class="btn btn-primary pull-left">
             Edit
         </a>
-    </li>
-    <li>
+
         <form action="{{ path('booking_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="_method" value="DELETE"/>
             {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
+            <button type="submit" class="btn btn-primary pull-right">Delete</button>
         </form>
-    </li>
-</ul>
+
+        <div style="clear: both"></div>
+
+        <div class="record_actions">
+            <a href="{{ path('booking') }}">
+                Back to the list
+            </a>
+        </div>
+    </div>
+
 {% endblock %}

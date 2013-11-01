@@ -25,10 +25,10 @@ class UserType extends AbstractType
                     'type'        => 'password',
                 )
             )
-            ->add('terms', 'checkbox', array(
-                'label' => ' I agree with the'
-                , 'mapped' => false
-            ))
+//            ->add('terms', 'checkbox', array(
+//                'label' => ' I agree with the'
+//                , 'mapped' => false
+//            ))
 //            ->add('url')
 //        <a href="#">Terms and Conditions</a>
 //            ->add('Sign Up', 'submit', array(

@@ -9,13 +9,19 @@
         <div class="span4">
             <blockquote>
                 <p>{{ entity.username }}</p>
-                <small><cite title="{{ entity.usercontact.address }}">{{ entity.usercontact.address }}<i class="icon-map-marker"></i></cite></small>
+                {% if (entity.usercontact.address) %}
+                    <small><cite title="{{ entity.usercontact.address }}">{{ entity.usercontact.address }}<i class="icon-map-marker"></i></cite></small>
+                {% endif %}
             </blockquote>
             <p>
-                <i class="">Phone: </i> {{ entity.usercontact.tel }}<br>
-                <i class="">Fax: </i> {{ entity.usercontact.fax }}<br>
+                {% if (entity.usercontact.tel) %}
+                    <i class="">Phone: </i> {{ entity.usercontact.tel }}<br>
+                {% endif %}
+                {% if (entity.usercontact.fax) %}
+                    <i class="">Fax: </i> {{ entity.usercontact.fax }}<br>
+                {% endif %}
                 <i class="icon-envelope"></i>E-mail: {{ entity.usercontact.email }} <br>
-                <i class="icon-globe"></i>WWW: {{ entity.usercontact.wwwaddress }} <br>
+                <i class="icon-globe"></i>WWW: <a href="{{ entity.usercontact.wwwaddress }}" target="_blank">{{ entity.usercontact.wwwaddress }}</a> <br>
                 <i>Personal code:</i> {{ entity.usercontact.personalcode }}<br>
                 <i class="icon-eye-open"></i> {{ entity.createdat|date('Y-m-d H:i:s') }}
             </p>
@@ -26,41 +32,4 @@
 
 
     </div>
-
-    {#<table class="record_properties">#}
-    {#<tbody>#}
-    {#<tr>#}
-    {#<th>Login</th>#}
-    {#<td>{{ entity.login }}</td>#}
-    {#</tr>#}
-    {#<tr>#}
-    {#<th>Updated_at</th>#}
-    {#<td>{{ entity.updatedat|date('Y-m-d H:i:s') }}</td>#}
-    {#</tr>#}
-    {#<tr>#}
-    {#<th>Created at</th>#}
-    {#<td>{{ entity.createdat|date('Y-m-d H:i:s') }}</td>#}
-    {#</tr>#}
-    {#</tbody>#}
-    {#</table>#}
-
-    {#<ul class="record_actions">#}
-    {#<li>#}
-    {#<a href="{{ path('user') }}">#}
-    {#Back to the list#}
-    {#</a>#}
-    {#</li>#}
-    {#<li>#}
-    {#<a href="{{ path('user_edit', { 'id': entity.id }) }}">#}
-    {#Edit#}
-    {#</a>#}
-    {#</li>#}
-    {#<li>#}
-    {#<form action="{{ path('user_delete', { 'id': entity.id }) }}" method="post">#}
-    {#<input type="hidden" name="_method" value="DELETE" />#}
-    {#{{ form_widget(delete_form) }}#}
-    {#<button type="submit">Delete</button>#}
-    {#</form>#}
-    {#</li>#}
-    {#</ul>#}
 {% endblock %}

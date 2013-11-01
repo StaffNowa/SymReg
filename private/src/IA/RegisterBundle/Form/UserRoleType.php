@@ -17,19 +17,25 @@ class UserRoleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', 'hidden')
-            ->add('role', 'entity', array(
-                'class' => 'IA\RegisterBundle\Entity\Role'
-                    , 'empty_value' => false
-                    , 'multiple' => true
-                    , 'expanded' => false
-            ));
+            ->add('id', 'hidden');
+//            ->add('userroles', 'entity', array(
+//                'class'    => 'IARegisterBundle:Role'
+//                , 'property' => 'name'
+//                , 'expanded' => true
+//                , 'multiple' => true
+////                , 'label'    => 'Role'
+////                , 'required' => false
+////                , 'query_builder' => function($repository) {
+////                        return $repository->createQueryBuilder('r');
+////                }
+//            ));
+
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
 //        $resolver->setDefaults(array(
-//            'data_class' => 'IA\RegisterBundle\Entity\User'
+//            'data_class' => 'IA\RegisterBundle\Entity\Role'
 //            , 'cascade_validation' => true
 //        ));
     }

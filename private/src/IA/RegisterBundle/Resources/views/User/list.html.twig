@@ -1,45 +1,54 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>User list</h1>
+    <h1>
+        {{ "User list"|trans }}
+    </h1>
     <div class="btn-toolbar">
-        <a href="{{ path('user_new') }}" class="btn btn-primary">New User</a>
+        <a href="{{ path('user_new') }}" class="btn btn-primary">{{ "New User"|trans }}</a>
     </div>
-    <div class="well">
-        <table class="records_list table">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Roles</th>
-                <th>Created at</th>
-                <th>Updated at</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for entity in entities %}
+
+    {% if(entities) %}
+        <div class="well">
+            <table class="records_list table">
+                <thead>
                 <tr>
-                    <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                    <td>{{ entity.username }}</td>
-                    <td>
-                        {#{% for role in entity.roles %}#}
-                            {#{{ role.name }}#}
-                        {#{% endfor %}#}
-                    </td>
-                    <td>{% if entity.createdat %}{{ entity.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if entity.updatedat %}{{ entity.updatedat|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>
-                        <a href="{{ path('user_show', { 'id': entity.id }) }}"><i class="icon-user"></i></a>
-                        <a href="{{ path('user_edit', { 'id': entity.id }) }}"><i class="icon-pencil"></i></a>
-                        <a href="{{ path('user_role', { 'id': entity.id }) }}"><i>User Role</i></a>
-                        {#<a href="{{ path('user_delete', { 'id': entity.id }) }}"><i class="icon-remove"></i></a>#}
-                    </td>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>E-Mail</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Roles</th>
+                    <th>Created at</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                        <td>{{ entity.username }}</td>
+                        <td>{{ entity.usercontact.email }}</td>
+                        <td>{{ entity.usercontact.firstname }}</td>
+                        <td>{{ entity.usercontact.lastname }}</td>
+                        <td>
+                            {% for role in entity.roles %}
+                                {{ role.name }}<br/>
+                            {% endfor %}
+                        </td>
+                        <td>{% if entity.createdat %}{{ entity.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>
+                            <a href="{{ path('user_show', { 'id': entity.id }) }}"><i class="icon-user"></i></a>
+                            <a href="{{ path('user_edit', { 'id': entity.id }) }}"><i class="icon-pencil"></i></a>
+                            <a href="{{ path('user_role', { 'id': entity.id }) }}"><i>User Role</i></a>
+                            <li><a href="{{ path('contact_info_edit', { 'id': entity.id }) }}">Contact Info Edit</a></li>
+                            {#<a href="{{ path('user_delete', { 'id': entity.id }) }}"><i class="icon-remove"></i></a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-    </div>
-
-    {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}

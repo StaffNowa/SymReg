@@ -15,12 +15,12 @@ class ContactInfoType extends AbstractType
             ->add('tel')
             ->add('fax')
             ->add('email')
-            ->add('www_address')
+            ->add('www_address', 'url', array(
+                'label' => 'WWWW'
+            ))
             ->add('first_name')
             ->add('last_name')
             ->add('personal_code')
-//            ->add('updated_at')
-//            ->add('created_at')
         ;
     }
 

@@ -2,52 +2,37 @@
 
 {% block body -%}
     <h1>Booking list</h1>
+    <div class="btn-toolbar">
+        <a href="{{ path('booking_new') }}" class="btn btn-primary">Create a new entry</a>
+    </div>
 
-    <table class="records_list">
-        <thead>
+    <div class="well">
+        <table class="records_list table">
+            <thead>
             <tr>
                 <th>Id</th>
-                <th>Order_number</th>
-                <th>Order_salesman</th>
-                <th>Contact_info_id</th>
+                <th>Order Number</th>
+                <th>Order Salesman</th>
                 <th>Additional_info</th>
-                <th>Data_json</th>
-                <th>Updated_at</th>
-                <th>Created_at</th>
+                <th>Created At</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('booking_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.ordernumber }}</td>
-                <td>{{ entity.ordersalesman }}</td>
-                <td>{{ entity.contactinfoid }}</td>
-                <td>{{ entity.additionalinfo }}</td>
-                <td>{{ entity.datajson }}</td>
-                <td>{% if entity.updatedat %}{{ entity.updatedat|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.createdat %}{{ entity.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                <ul>
-                    <li>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('booking_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{{ entity.ordernumber }}</td>
+                    <td>{{ entity.bookinguser.username }}</td>
+                    <td>{{ entity.additionalinfo }}</td>
+                    <td>{% if entity.createdat %}{{ entity.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>
                         <a href="{{ path('booking_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('booking_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('booking_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+                        <a href="{{ path('booking_edit', { 'id': entity.id }) }}"><i class="icon-pencil"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -45,6 +45,11 @@ IA\RegisterBundle\Entity\Booking:
 
         updated_at:
             type: datetime
+            nullable: true
 
         created_at:
             type: datetime
+
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]

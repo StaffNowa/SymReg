@@ -8,9 +8,8 @@ IA\RegisterBundle\Entity\Organization:
             mappedBy: pos_org
 
     manyToOne:
-        #contact_info_id
         org_contact:
-            targetEntity: Contactinfo
+            targetEntity: ContactInfo
             inversedBy: contact_org
             joinColumn:
                 name: contact_info_id
